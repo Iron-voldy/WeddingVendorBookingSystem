@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everlasting Moments | Wedding Vendor Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fefefe;
+            color: #333;
+        }
+
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important;
+            padding: 0.8rem 1rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .navbar .nav-link {
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+        }
+
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: white;
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .navbar .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .carousel-item {
+            height: 70vh;
+            max-height: 700px;
+        }
+
+        .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+            filter: brightness(0.8);
+        }
+
+        .carousel-caption {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            bottom: 5rem;
+            max-width: 700px;
+            margin: 0 auto;
+            left: 10%;
+            right: 10%;
+        }
+
+        .carousel-caption h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .carousel-caption p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.3);
+        }
+
+        .btn-outline-primary {
+            color: #6a11cb;
+            border-color: #6a11cb;
+            border-radius: 30px;
+            padding: 12px 30px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #6a11cb;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.2);
+        }
+
+        .btn-outline-light {
+            border-radius: 30px;
+            padding: 8px 25px;
+            font-weight: 500;
+        }
+
+        .main-content {
+            padding: 5rem 0;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.05);
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+            background-color: white;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.05);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #6a11cb;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 5rem;
+        }
+
+        footer .text-muted {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        footer a.text-muted {
+            color: rgba(255,255,255,0.6) !important;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        footer a.text-muted:hover {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Everlasting Moments</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/"><i class="bi bi-house-heart me-1"></i> Home</a>
+                </li>
+                <li th:if="${user != null}" class="nav-item">
+                    <a class="nav-link" href="/dashboard"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vendors"><i class="bi bi-shop me-1"></i> Vendors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/quotes/create"><i class="bi bi-camera me-1"></i> Request Quote</a>
+                </li>
+            </ul>
+            <div class="d-flex" th:if="${user != null}">
+                <span class="navbar-text me-3">
+                    <i class="bi bi-person-circle me-1"></i> Welcome, <span th:text="${user.name}"></span>
+                </span>
+                <a href="/logout" class="btn btn-outline-light">Logout</a>
+            </div>
+            <div class="d-flex" th:unless="${user != null}">
+                <a href="/login" class="btn btn-outline-light me-2">Login</a>
+                <a href="/register" class="btn btn-light">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Banner Carousel -->
+<div th:if="${!banners.empty}" id="homeBannerCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button th:each="banner, stat : ${banners}" type="button" data-bs-target="#homeBannerCarousel"
+                th:data-bs-slide-to="${stat.index}" th:class="${stat.first} ? 'active' : ''"
+                th:aria-current="${stat.first} ? 'true' : 'false'" th:aria-label="'Slide ' + ${stat.count}"></button>
+    </div>
+    <div class="carousel-inner">
+        <div th:each="banner, stat : ${banners}" th:class="'carousel-item ' + ${stat.first ? 'active' : ''}">
+            <img th:src="${banner.imageUrl}" class="d-block w-100" th:alt="${banner.title}">
+            <div class="carousel-caption d-none d-md-block">
+                <h2 th:text="${banner.title}"></h2>
+                <p th:text="${banner.description}"></p>
+                <a href="/vendors" class="btn btn-primary mt-3">Find Your Perfect Vendor</a>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Main Content -->
+<div class="container main-content">
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+            <h1 class="mb-4">Your Dream Wedding Starts Here</h1>
+            <p class="lead mb-5">Find and book the best vendors for your special day, all in one place!</p>
+
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="bi bi-search-heart feature-icon"></i>
+                        <h3>Discover</h3>
+                        <p>Browse our handpicked collection of top-rated wedding vendors in your area.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="bi bi-chat-quote feature-icon"></i>
+                        <h3>Compare</h3>
+                        <p>Request personalized quotes from multiple vendors to find your perfect match.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="bi bi-calendar-check feature-icon"></i>
+                        <h3>Book</h3>
+                        <p>Secure your date with confidence through our easy booking system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-3 col-md-6 mx-auto mt-5">
+                <a href="/vendors" class="btn btn-primary btn-lg"><i class="bi bi-search me-2"></i>Browse All Vendors</a>
+                <a href="/quotes/create" class="btn btn-success btn-lg"><i class="bi bi-camera me-2"></i>Request Photography Quote</a>
+                <a th:if="${user == null}" href="/register" class="btn btn-outline-primary"><i class="bi bi-person-plus me-2"></i>Create Account</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2>What Our Couples Say</h2>
+            <div class="w-25 mx-auto" style="height: 3px; background: linear-gradient(90deg, transparent, #6a11cb, transparent);"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3 text-primary">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="card-text">"We found our perfect photographer in just one day! The quote process was so easy, and we loved being able to compare options."</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span>JA</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Jessica & Andrew</h6>
+                            <small class="text-muted">Married June 2025</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3 text-primary">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="card-text">"This site saved us so much time! We booked our DJ, caterer, and florist all through this platform. Highly recommend!"</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span>MR</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Michael & Rachel</h6>
+                            <small class="text-muted">Married April 2025</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3 text-primary">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="card-text">"As a busy couple, we appreciated how streamlined everything was. The vendors were amazing, and our wedding was perfect!"</p>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span>SE</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Sarah & Eric</h6>
+                            <small class="text-muted">Married March 2025</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container-fluid py-5 mt-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/api/placeholder/1600/400') center/cover no-repeat;">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center text-white">
+                <h2 class="mb-4">Ready to Start Planning Your Perfect Day?</h2>
+                <p class="lead mb-4">Join thousands of happy couples who found their dream wedding vendors with us.</p>
+                <div class="d-grid gap-3 d-md-flex justify-content-md-center">
+                    <a href="/register" class="btn btn-primary btn-lg px-5">Get Started Today</a>
+                    <a href="/vendors" class="btn btn-outline-light btn-lg px-5">Explore Vendors</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h3 class="text-white mb-4">Everlasting Moments</h3>
+                <p class="text-muted">Your complete wedding vendor booking solution, designed to make planning your special day effortless and enjoyable.</p>
+                <div class="d-flex mt-4">
+                    <a href="#" class="me-3 text-muted"><i class="bi bi-facebook fs-4"></i></a>
+                    <a href="#" class="me-3 text-muted"><i class="bi bi-instagram fs-4"></i></a>
+                    <a href="#" class="me-3 text-muted"><i class="bi bi-pinterest fs-4"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-white mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/" class="text-muted">Home</a></li>
+                    <li class="mb-2"><a href="/vendors" class="text-muted">Vendors</a></li>
+                    <li class="mb-2"><a href="/quotes/create" class="text-muted">Request Quote</a></li>
+                    <li class="mb-2"><a href="/register" class="text-muted">Register</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-white mb-4">Vendor Types</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/vendors?type=photographer" class="text-muted">Photographers</a></li>
+                    <li class="mb-2"><a href="/vendors?type=caterer" class="text-muted">Caterers</a></li>
+                    <li class="mb-2"><a href="/vendors?type=venue" class="text-muted">Venues</a></li>
+                    <li class="mb-2"><a href="/vendors?type=florist" class="text-muted">Florists</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="text-white mb-4">Newsletter</h5>
+                <p class="text-muted">Subscribe for wedding planning tips and exclusive vendor offers.</p>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your email address" aria-label="Your email address">
+                    <button class="btn btn-light" type="button">Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-5 mb-4" style="border-color: rgba(255,255,255,0.1);">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="text-muted mb-0">Everlasting Moments &copy; 2025. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <small><a href="/admin/login" class="text-muted">Admin Login</a></small>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

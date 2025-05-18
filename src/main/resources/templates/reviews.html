@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Reviews - Wedding Vendor Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .review-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .card-title {
+            color: #6c63ff;
+            font-weight: 600;
+        }
+        .star-rating {
+            font-size: 1.2rem;
+        }
+        .page-header {
+            border-bottom: 2px solid #6c63ff;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-footer {
+            background-color: rgba(108, 99, 255, 0.05);
+            border-top: none;
+        }
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+        }
+        .empty-icon {
+            font-size: 4rem;
+            color: #6c63ff;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/dashboard">Wedding Vendor Booking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/reviews">All Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reviews/my-reviews">My Reviews</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+<span class="navbar-text me-3">
+Welcome, <span th:text="${user.name}"></span>
+</span>
+                <a href="/logout" class="btn btn-outline-light">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title page-header">
+                        <i class="bi bi-stars me-2"></i>All Vendor Reviews
+                    </h2>
+
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <div th:if="${reviews.empty}" class="empty-state">
+                        <i class="bi bi-chat-square-text empty-icon"></i>
+                        <h3>No reviews found</h3>
+                        <p class="text-muted">Be the first to share your experience with a vendor!</p>
+                        <a href="/reviews/my-reviews" class="btn btn-primary mt-3">
+                            <i class="bi bi-plus-circle me-2"></i>Write a Review
+                        </a>
+                    </div>
+
+                    <div th:unless="${reviews.empty}" class="mt-4">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col" th:each="review : ${reviews}">
+                                <div class="card h-100 review-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${review.vendorName}"></h5>
+                                        <div class="mb-3 star-rating">
+                                            <span th:each="i : ${#numbers.sequence(1, review.rating)}">
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            </span>
+                                            <span th:each="i : ${#numbers.sequence(review.rating + 1, 5)}">
+                                                <i class="bi bi-star text-warning"></i>
+                                            </span>
+                                        </div>
+                                        <p class="card-text" th:text="${review.comment}"></p>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        <small th:text="${review.formattedDate}"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Everlasting Moments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important;
+            padding: 0.8rem 1rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .navbar .nav-link {
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+        }
+
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: white;
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .navbar .nav-link:hover::after,
+        .navbar .nav-link.active::after {
+            width: 80%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn-outline-light {
+            border-radius: 30px;
+            padding: 8px 25px;
+            font-weight: 500;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 3rem 0;
+            color: white;
+            margin-bottom: 3rem;
+            border-radius: 0 0 2rem 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card {
+            border-radius: 1.5rem;
+            border: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            height: 80px;
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+
+        .icon-reviews {
+            background: linear-gradient(135deg, #FF9500 0%, #FC4A1A 100%);
+        }
+
+        .icon-browse {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+
+        .icon-profile {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .icon-vendors {
+            background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%);
+        }
+
+        .icon-bookings {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .icon-quotes {
+            background: linear-gradient(135deg, #544a7d 0%, #ffd452 100%);
+        }
+
+        .stats-card {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .stats-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-title {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .upcoming-section {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .upcoming-title {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upcoming-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .upcoming-item:hover {
+            background-color: #f0f2f5;
+            transform: translateX(5px);
+        }
+
+        .upcoming-date {
+            min-width: 75px;
+            text-align: center;
+            border-right: 1px solid #dee2e6;
+            padding-right: 1rem;
+            margin-right: 1rem;
+        }
+
+        .upcoming-day {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #6a11cb;
+        }
+
+        .upcoming-month {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #6c757d;
+        }
+
+        .upcoming-details {
+            flex-grow: 1;
+        }
+
+        .upcoming-vendor {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .upcoming-type {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .upcoming-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .upcoming-actions a {
+            padding: 0.5rem;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+
+        .upcoming-actions a:hover {
+            color: #6a11cb;
+        }
+
+        .progress-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            border-radius: 4px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Everlasting Moments</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="bi bi-house-heart me-1"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/dashboard"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vendors"><i class="bi bi-shop me-1"></i> Vendors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bookings"><i class="bi bi-calendar-check me-1"></i> Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/quotes"><i class="bi bi-chat-quote me-1"></i> Quote Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reviews"><i class="bi bi-star me-1"></i> Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile"><i class="bi bi-person-circle me-1"></i> Profile</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <span class="navbar-text me-3">
+                    <i class="bi bi-person-circle me-1"></i> Welcome, <span th:text="${user.name}"></span>
+                </span>
+                <a href="/logout" class="btn btn-outline-light"><i class="bi bi-box-arrow-right me-1"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-4">My Wedding Dashboard</h1>
+                <p class="lead">Manage all your wedding planning activities in one place</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="/quotes/create" class="btn btn-light btn-lg"><i class="bi bi-plus-circle me-2"></i>Request Quote</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="bi bi-calendar-check stats-icon text-primary"></i>
+                <div class="stats-number">3</div>
+                <div class="stats-title">Confirmed Bookings</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="bi bi-chat-quote stats-icon text-success"></i>
+                <div class="stats-number">5</div>
+                <div class="stats-title">Quote Requests</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="bi bi-star stats-icon text-warning"></i>
+                <div class="stats-number">2</div>
+                <div class="stats-title">Reviews Posted</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="bi bi-calendar2-week stats-icon text-info"></i>
+                <div class="stats-number">210</div>
+                <div class="stats-title">Days to Wedding</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Planning Progress -->
+    <div class="upcoming-section mb-4">
+        <div class="upcoming-title">
+            <h3>Your Wedding Planning Progress</h3>
+        </div>
+        <div class="progress-title">
+            <span>Overall Progress</span>
+            <span>45%</span>
+        </div>
+        <div class="progress mb-4">
+            <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="progress-title">
+                    <span>Venue</span>
+                    <span>100%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="progress-title">
+                    <span>Catering</span>
+                    <span>75%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="progress-title">
+                    <span>Photography</span>
+                    <span>50%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Bookings -->
+    <div class="upcoming-section mb-4">
+        <div class="upcoming-title">
+            <h3>Upcoming Appointments</h3>
+            <a href="/bookings" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+
+        <div class="upcoming-item">
+            <div class="upcoming-date">
+                <div class="upcoming-day">28</div>
+                <div class="upcoming-month">May</div>
+            </div>
+            <div class="upcoming-details">
+                <div class="upcoming-vendor">Sunset Gardens</div>
+                <div class="upcoming-type">Venue Tour - 2:00 PM</div>
+            </div>
+            <div class="upcoming-actions">
+                <a href="#" title="Edit"><i class="bi bi-pencil"></i></a>
+                <a href="#" title="Cancel" class="ms-2"><i class="bi bi-x-circle"></i></a>
+            </div>
+        </div>
+
+        <div class="upcoming-item">
+            <div class="upcoming-date">
+                <div class="upcoming-day">5</div>
+                <div class="upcoming-month">Jun</div>
+            </div>
+            <div class="upcoming-details">
+                <div class="upcoming-vendor">Delicious Catering</div>
+                <div class="upcoming-type">Menu Tasting - 4:30 PM</div>
+            </div>
+            <div class="upcoming-actions">
+                <a href="#" title="Edit"><i class="bi bi-pencil"></i></a>
+                <a href="#" title="Cancel" class="ms-2"><i class="bi bi-x-circle"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-body text-center p-4">
+                    <div class="card-icon icon-reviews">
+                        <i class="bi bi-star-fill fs-3"></i>
+                    </div>
+                    <h3 class="mt-3">Review Vendors</h3>
+                    <p class="text-muted mb-4">Share your experiences with wedding vendors to help other couples</p>
+                    <a href="/reviews/my-reviews" class="btn btn-primary"><i class="bi bi-pencil-square me-2"></i>My Reviews</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-body text-center p-4">
+                    <div class="card-icon icon-browse">
+                        <i class="bi bi-search fs-3"></i>
+                    </div>
+                    <h3 class="mt-3">Browse Reviews</h3>
+                    <p class="text-muted mb-4">See what other couples are saying about wedding vendors</p>
+                    <a href="/reviews" class="btn btn-primary"><i class="bi bi-list-stars me-2"></i>All Reviews</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-body text-center p-4">
+                    <div class="card-icon icon-profile">
+                        <i class="bi bi-person-circle fs-3"></i>
+                    </div>
+                    <h3 class="mt-3">Your Profile</h3>
+                    <p class="text-muted mb-4">Update your personal information and preferences</p>
+                    <a href="/profile" class="btn btn-primary"><i class="bi bi-gear me-2"></i>Manage Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-body text-center p-4">
+                    <div class="card-icon icon-vendors">
+                        <i class="bi bi-shop fs-3"></i>
+                    </div>
+                    <h3 class="mt-3">Wedding Vendors</h3>
+                    <p class="text-muted mb-4">Discover and explore vendors for your special day</p>
+                    <a href="/vendors" class="btn btn-primary"><i class="bi bi-shop me-2"></i>View Vendors</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-body text-center p-4">
+                    <div class="card-icon icon-bookings">
+                        <i class="bi bi-calendar-check fs-3"></i>
+                    </div>
+                    <h3 class="mt-3">My Bookings</h3>
+                    <p class="text-muted mb-4">Manage all your confirmed vendor bookings</p>
+                    <a href="/bookings" class="btn btn-primary"><i class="bi bi-calendar-check me-2"></i>View Bookings</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-body text-center p-4">
+                    <div class="card-icon icon-quotes">
+                        <i class="bi bi-camera fs-3"></i>
+                    </div>
+                    <h3 class="mt-3">Photography Quotes</h3>
+                    <p class="text-muted mb-4">Request and manage photography quote requests</p>
+                    <a href="/quotes" class="btn btn-primary"><i class="bi bi-camera me-2"></i>View Quotes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

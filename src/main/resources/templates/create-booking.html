@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Booking - Wedding Vendor Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/dashboard">Wedding Vendor Booking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vendors">Vendors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/bookings">Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reviews">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">Profile</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                    <span class="navbar-text me-3">
+                        Welcome, <span th:text="${user.name}"></span>
+                    </span>
+                <a href="/logout" class="btn btn-outline-light">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Book Vendor: <span th:text="${vendor.name}"></span></h2>
+                    <p class="text-muted" th:text="${vendor.category}"></p>
+
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <form action="/bookings/create" method="post" class="mt-4">
+                        <input type="hidden" name="vendorId" th:value="${vendor.id}">
+
+                        <div class="mb-3">
+                            <label for="eventDate" class="form-label">Event Date</label>
+                            <input type="date" class="form-control" id="eventDate" name="eventDate"
+                                   th:min="${minDate}" required>
+                            <small class="text-muted">Please select your wedding/event date</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="eventLocation" class="form-label">Event Location</label>
+                            <input type="text" class="form-control" id="eventLocation" name="eventLocation" required>
+                            <small class="text-muted">Where will your event take place?</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="packageSelected" class="form-label">Package</label>
+                            <select class="form-select" id="packageSelected" name="packageSelected" required>
+                                <option value="">Select a package</option>
+                                <option value="Basic">Basic Package</option>
+                                <option value="Standard">Standard Package</option>
+                                <option value="Premium">Premium Package</option>
+                                <option value="Custom">Custom Package</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount ($)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="amount" name="amount" required>
+                            <small class="text-muted">Estimated cost for the selected package</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="specialRequests" class="form-label">Special Requests</label>
+                            <textarea class="form-control" id="specialRequests" name="specialRequests" rows="3"></textarea>
+                            <small class="text-muted">Any special requirements or notes for the vendor</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{'/vendors/details/' + ${vendor.id}}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit Booking</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

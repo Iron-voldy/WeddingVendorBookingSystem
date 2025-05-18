@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Vendor - Wedding Vendor Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/dashboard">Wedding Vendor Booking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/vendors">Vendors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reviews">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">Profile</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                    <span class="navbar-text me-3">
+                        Welcome, <span th:text="${user.name}"></span>
+                    </span>
+                <a href="/logout" class="btn btn-outline-light">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Edit Vendor</h2>
+
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <form th:action="@{'/vendors/update/' + ${vendor.id}}" method="post">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Vendor Name</label>
+                            <input type="text" class="form-control" id="name" name="name" th:value="${vendor.name}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imageUrl" class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="imageUrl" name="imageUrl" th:value="${vendor.imageUrl}" required>
+                            <div class="mt-2">
+                                <img th:src="${vendor.imageUrl}" alt="Vendor Image Preview" class="img-thumbnail" style="max-height: 150px;">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Select a category</option>
+                                <option value="Photography" th:selected="${vendor.category == 'Photography'}">Photography</option>
+                                <option value="Catering" th:selected="${vendor.category == 'Catering'}">Catering</option>
+                                <option value="Venue" th:selected="${vendor.category == 'Venue'}">Venue</option>
+                                <option value="Decoration" th:selected="${vendor.category == 'Decoration'}">Decoration</option>
+                                <option value="Music" th:selected="${vendor.category == 'Music'}">Music</option>
+                                <option value="Cake" th:selected="${vendor.category == 'Cake'}">Cake</option>
+                                <option value="Florist" th:selected="${vendor.category == 'Florist'}">Florist</option>
+                                <option value="Attire" th:selected="${vendor.category == 'Attire'}">Attire</option>
+                                <option value="Transportation" th:selected="${vendor.category == 'Transportation'}">Transportation</option>
+                                <option value="Other" th:selected="${vendor.category == 'Other'}">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactInfo" class="form-label">Contact Information</label>
+                            <input type="text" class="form-control" id="contactInfo" name="contactInfo" th:value="${vendor.contactInfo}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required th:text="${vendor.description}"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="/vendors/manage" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Update Vendor</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

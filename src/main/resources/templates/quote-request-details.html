@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quote Request Details - Wedding Vendor Booking System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="/dashboard">Wedding Vendor Booking</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vendors">Vendors</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/bookings">Bookings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/quotes">Quote Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/reviews">Reviews</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+                    <span class="navbar-text me-3">
+                        Welcome, <span th:text="${user.name}"></span>
+                    </span>
+        <a href="/logout" class="btn btn-outline-light">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Quote Request Details</h4>
+          <span th:if="${quoteRequest.status == 'NEW'}" class="badge bg-info">New</span>
+          <span th:if="${quoteRequest.status == 'CONTACTED'}" class="badge bg-primary">Contacted</span>
+          <span th:if="${quoteRequest.status == 'QUOTED'}" class="badge bg-warning text-dark">Quoted</span>
+          <span th:if="${quoteRequest.status == 'BOOKED'}" class="badge bg-success">Booked</span>
+          <span th:if="${quoteRequest.status == 'DECLINED'}" class="badge bg-danger">Declined</span>
+        </div>
+        <div class="card-body">
+          <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+          <h5 class="card-title">Client Information</h5>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Name:</div>
+            <div class="col-md-8" th:text="${quoteRequest.title + ' ' + quoteRequest.firstName + ' ' + quoteRequest.lastName}"></div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Email:</div>
+            <div class="col-md-8" th:text="${quoteRequest.email}"></div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Contact Number:</div>
+            <div class="col-md-8" th:text="${quoteRequest.contactNumber}"></div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Address:</div>
+            <div class="col-md-8" th:text="${quoteRequest.address}"></div>
+          </div>
+
+          <hr>
+
+          <h5 class="card-title">Wedding Information</h5>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Wedding Date:</div>
+            <div class="col-md-8" th:text="${quoteRequest.formattedWeddingDate}"></div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Venue Name:</div>
+            <div class="col-md-8" th:text="${quoteRequest.hotelName}"></div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Venue Address:</div>
+            <div class="col-md-8" th:text="${quoteRequest.hotelAddress}"></div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Venue Contact:</div>
+            <div class="col-md-8" th:text="${quoteRequest.hotelContactNumber}"></div>
+          </div>
+
+          <hr>
+
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Request Date:</div>
+            <div class="col-md-8" th:text="${quoteRequest.formattedCreatedAt}"></div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <a href="/quotes" class="btn btn-secondary">Back to Quote Requests</a>
+            <div>
+              <a th:href="@{'/quotes/update-status/' + ${quoteRequest.id}}" class="btn btn-warning">
+                Update Status
+              </a>
+              <a th:href="@{'/quotes/edit/' + ${quoteRequest.id}}" class="btn btn-primary">
+                Edit
+              </a>
+              <a th:href="@{'/quotes/delete/' + ${quoteRequest.id}}" class="btn btn-danger"
+                 onclick="return confirm('Are you sure you want to delete this quote request?')">
+                Delete
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
